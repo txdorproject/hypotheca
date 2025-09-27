@@ -21,7 +21,7 @@ function DistributionOfExpenses({
     e: React.ChangeEvent<HTMLInputElement>,
     action: ActionType
   ) => {
-    let value = Number(e.target.value);
+    const value = Number(e.target.value);
     if (action === ActionType.FIRST) {
       setFirstDistribution(value);
       onChangeDistributionValues(value, 100 - value);

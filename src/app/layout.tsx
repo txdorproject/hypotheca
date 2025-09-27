@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const siteConfig = {
+const siteConfig = {
   name: "Hypotheca",
   description:
     "Simulateur de prêt immobilier gratuit pour calculer vos mensualités, votre taux d'endettement et estimer votre capacité d'emprunt en quelques secondes.",

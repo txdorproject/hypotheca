@@ -45,7 +45,7 @@ export default function Home() {
   React.useEffect(() => {
     if (!loanEstimationRef.current) return;
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         setLoanEstimationHeight(entry.contentRect.height);
       }
     });
@@ -82,7 +82,7 @@ export default function Home() {
           <div className="flex mt-2 gap-2 flex-wrap xl:gap-10 xl:mt-0">
             <div className="mt-6 rounded-md border border-gray-200 p-4 flex flex-col items-center gap-2">
               <p className="text-xs">
-                Estimez votre taux d'endettement en fonction de vos mensualités
+                Estimez votre taux d&apos;endettement en fonction de vos mensualités
               </p>
               <div className="flex w-fit">
                 <InputWithLabel
