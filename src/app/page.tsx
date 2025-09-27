@@ -1,103 +1,127 @@
-import Image from "next/image";
+"use client";
+
+import React, { useCallback, useMemo } from "react";
+import LoanForm from "@/components/LoanForm/LoanForm";
+import LoanMonthEstimation from "@/components/LoanMonthEstimation/LoanMonthEstimation";
+
+import { calculateLoans, calculateDebtRatio } from "@/helpers/loan.helpers";
+import { InputWithLabel } from "@/components/Input/Input";
+import NotaryFees from "@/components/NotaryFees/NotaryFees";
+import ProcessingFees from "@/components/ProcessingFees/ProcessingFees";
+import { processingFees } from "@/constants/contants";
+import AdditionnalFees from "@/components/AdditionnalFees/AdditionnalFees";
+import { useLoan } from "@/hooks/useLoan";
+import DistributionOfExpenses from "@/components/DistributionOfExpenses/DistributionOfExpenses";
+import { DistributionValues } from "@/types/types";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [houseHoldIncome, setHouseHoldIncome] = React.useState<number>(0);
+  const [distributionsValues, setDistributionsValues] =
+    React.useState<DistributionValues>({ first: 50, second: 50 });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const changeDistributionValues = useCallback(
+    (first: number, second: number) => {
+      setDistributionsValues({ first, second });
+    },
+    []
+  );
+
+  const { state, handleUpdateLoanDetails, setNotaryFees, setProcessingFees } =
+    useLoan();
+
+  const monthlyPayments = useMemo(() => {
+    return calculateLoans(state);
+  }, [state]);
+
+  const debtRatios = useMemo(() => {
+    if (houseHoldIncome > 0) {
+      return calculateDebtRatio(houseHoldIncome, monthlyPayments);
+    }
+  }, [monthlyPayments, houseHoldIncome]);
+
+  const [loanEstimationHeight, setLoanEstimationHeight] = React.useState(0);
+  const loanEstimationRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!loanEstimationRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setLoanEstimationHeight(entry.contentRect.height);
+      }
+    });
+    observer.observe(loanEstimationRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="p-3">
+      <div className="w-11/12 m-auto mt-4 flex flex-col gap-5 lg:flex-row">
+        <div className="w-full lg:w-8/12">
+          <LoanForm
+            onUpdateLoanValues={handleUpdateLoanDetails}
+            state={state}
+          />
+          <div className="flex mt-2 gap-2 flex-wrap xl:gap-10 xl:mt-0">
+            <NotaryFees
+              title={`Frais de notaire (selon l'état de votre bien)`}
+              selectedValue={state.notaryFees}
+              onSelect={setNotaryFees}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <ProcessingFees
+              selectedValue={state.processingFees}
+              onSelect={setProcessingFees}
+              title={processingFees.label}
+            />
+          </div>
+          <div>
+            <AdditionnalFees
+              onUpdateLoanValues={handleUpdateLoanDetails}
+              state={state}
+            />
+          </div>
+          <div className="flex mt-2 gap-2 flex-wrap xl:gap-10 xl:mt-0">
+            <div className="mt-6 rounded-md border border-gray-200 p-4 flex flex-col items-center gap-2">
+              <p className="text-xs">
+                Estimez votre taux d'endettement en fonction de vos mensualités
+              </p>
+              <div className="flex w-fit">
+                <InputWithLabel
+                  label="Revenu du ménage"
+                  id="householdIncome"
+                  placeholder="1 200 €"
+                  getOnChangeValueInput={(e) => {
+                    setHouseHoldIncome(Number(e.target.value));
+                  }}
+                  customSize="w-full"
+                  max={20000}
+                  min={0}
+                  step={10}
+                  valueInput={houseHoldIncome || ""}
+                />
+              </div>
+            </div>
+            <DistributionOfExpenses
+              onChangeDistributionValues={changeDistributionValues}
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="lg:hidden" style={{ height: loanEstimationHeight - 40 }} />
+        <div className="w-full lg:w-4/12">
+          <div className="flex gap-6 flex-col lg:flex-row">
+            <div className="flex-1">
+              <LoanMonthEstimation
+                ref={loanEstimationRef}
+                monthlyPayment={monthlyPayments}
+                years={state.loanDuration || 0}
+                debtRatio={debtRatios}
+                distributionValues={distributionsValues}
+                houseHoldIncome={houseHoldIncome}
+                loanDetailsForEstimation={state}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
