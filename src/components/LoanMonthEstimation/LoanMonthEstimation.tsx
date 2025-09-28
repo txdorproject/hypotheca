@@ -84,13 +84,17 @@ const LoanMonthEstimation = React.forwardRef<
           debtRatio ? borderColorMap[debtRatio.color] : ""
         }`}
       >
-        <div className="flex flex-col pb-3 lg:border-b border-neutral-300">
+        <div className="flex flex-col pb-1 lg:border-b border-neutral-300">
           <LoanMonthEstimationLine
             text="Crédit mensuel :"
             value={monthlyPayment ?? 0}
             needToBeStrong={true}
             customStyle="text-xl"
           />
+        </div>
+        <div className="text-[10.5px] text-gray-800 mb-3 italic lg:mt-3">
+          Les données de ce simulateur sont fournies à titre indicatif et ne
+          sont pas contractuelles.
         </div>
         <div className="lg:hidden">
           <Button

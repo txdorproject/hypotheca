@@ -6,6 +6,7 @@ export type LoanDetailsType = {
   minValue?: number;
   step?: number;
   icon?: React.ReactNode;
+  informationNote?: string;
 }
 
 export type LoanDetailsForEstimation = {

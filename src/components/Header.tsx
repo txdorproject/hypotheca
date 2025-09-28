@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function Header() {
   return (
-    <div className="flex items-center justify-center p-4 flex-col">
+    <div className="flex items-center justify-center p-4 pb-2 flex-col">
       <div>
         <Image
           src={HypothecaLogo}
@@ -13,7 +13,7 @@ function Header() {
           height={50}
         />
       </div>
-      <div className="text-center mt-4 text-xs">
+      <div className="text-center mt-3 text-xs">
         <h1>
           Simulation de Crédit Immobilier en Ligne – Calculateur Gratuit et
           Instantané | Hypotheca

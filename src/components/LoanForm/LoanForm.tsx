@@ -14,7 +14,7 @@ function LoanForm({ onUpdateLoanValues, state }: LoanFormProps) {
   return (
     <div className="flex gap-4 flex-wrap">
       {LOAN_DETAILS.map((detail) => (
-        <div className="flex w-[150px] lg:w-[190px]" key={detail.key}>
+        <div className="flex w-[300px] lg:w-[190px] flex-wrap" key={detail.key}>
           <InputWithLabel
             label={detail.label}
             id={detail.key}

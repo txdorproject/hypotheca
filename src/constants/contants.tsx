@@ -17,9 +17,9 @@ export const LOAN_DETAILS: LoanDetailsType[] = [
     label: "J'emprunte",
     key: "propertyPrice",
     placeholder: "200 000 €",
-    maxValue: 700000,
+    maxValue: 600000,
     minValue: 0,
-    step: 500,
+    step: 1000,
     icon: <IoMdHome size={15} />,
   },
   {
@@ -32,13 +32,13 @@ export const LOAN_DETAILS: LoanDetailsType[] = [
     icon: <FiClock size={15} />,
   },
   {
-    label: "Avec un apport",
+    label: "Avec un apport (~20 %)",
     key: "personalContribution",
     placeholder: "20 000 €",
-    maxValue: 200000,
+    maxValue: 350000,
     minValue: 0,
-    step: 100,
-    icon: <FaPiggyBank size={15} />,
+    step: 1000,
+    icon: <FaPiggyBank size={15} />
   },
   {
     label: "Taux d'interêt",
@@ -88,9 +88,9 @@ export const additionnalFees: AdditionnalFees[] = [
     label: "Frais mensuels récurrents (optionnel)",
     key: "monthlyExpenses",
     placehoder: "500 € (internet, électricité, courses, ...)",
-    maxValue: 3000,
+    maxValue: 5000,
     minValue: 0,
-    step: 1,
+    step: 50,
     icon: <MdReceiptLong size={15} />,
   },
   {
@@ -99,7 +99,7 @@ export const additionnalFees: AdditionnalFees[] = [
     placehoder: "1200 € annuel",
     maxValue: 4000,
     minValue: 0,
-    step: 1,
+    step: 10,
     icon: <GiReceiveMoney size={15} />,
   },
 ];

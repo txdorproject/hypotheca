@@ -82,7 +82,8 @@ export default function Home() {
           <div className="flex mt-2 gap-2 flex-wrap xl:gap-10 xl:mt-0">
             <div className="mt-6 rounded-md border border-gray-200 p-4 flex flex-col items-center gap-2">
               <p className="text-xs">
-                Estimez votre taux d&apos;endettement en fonction de vos mensualités
+                Estimez votre taux d&apos;endettement en fonction de vos
+                mensualités
               </p>
               <div className="flex w-fit">
                 <InputWithLabel
@@ -93,9 +94,9 @@ export default function Home() {
                     setHouseHoldIncome(Number(e.target.value));
                   }}
                   customSize="w-full"
-                  max={20000}
+                  max={10000}
                   min={0}
-                  step={10}
+                  step={100}
                   valueInput={houseHoldIncome || ""}
                 />
               </div>
@@ -105,7 +106,10 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="lg:hidden" style={{ height: loanEstimationHeight - 40 }} />
+        <div
+          className="lg:hidden"
+          style={{ height: loanEstimationHeight + 15 }}
+        />
         <div className="w-full lg:w-4/12">
           <div className="flex gap-6 flex-col lg:flex-row">
             <div className="flex-1">

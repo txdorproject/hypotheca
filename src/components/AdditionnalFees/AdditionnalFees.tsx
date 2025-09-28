@@ -13,7 +13,7 @@ function AdditionnalFees({ onUpdateLoanValues, state }: AdditionnalFeesProps) {
     <div className="mt-3 pt-6">
       <div className="flex gap-4 flex-wrap">
         {additionnalFees.map((fee) => (
-          <div className="flex w-full lg:w-[280px]" key={fee.key}>
+          <div className="flex" key={fee.key}>
             <InputWithLabel
               label={fee.label}
               id={fee.key}
@@ -22,7 +22,7 @@ function AdditionnalFees({ onUpdateLoanValues, state }: AdditionnalFeesProps) {
                 onUpdateLoanValues(fee.key, parseFloat(e.target.value))
               }
               valueInput={state[fee.key] ?? ""}
-              customSize="w-[180px]"
+              customSize="w-[300px] lg:w-[190px]"
               max={fee.maxValue}
               min={fee.minValue}
               step={fee.step}

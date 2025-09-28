@@ -14,6 +14,7 @@ type InputWithLabelProps = {
   step?: number;
   max?: number;
   icon?: React.ReactNode;
+  informationNote?: string;
 };
 
 export function InputWithLabel({
@@ -27,19 +28,19 @@ export function InputWithLabel({
   step = 0.1,
   max = 100,
   icon,
+  informationNote,
 }: InputWithLabelProps) {
   return (
-    <div
-      className={`flex flex-col lg:max-w-xs gap-3 mb-1 relative text-nowrap ${customSize}`}
-    >
+    <div className={`flex flex-col gap-2.5 mb-1 relative ${customSize}`}>
       <div className="flex items-center gap-1">
         {icon && <span>{icon}</span>}
         <Label htmlFor={id}>{label}</Label>
       </div>
 
       <Input
-        type="number"
-        inputMode="numeric"
+        type="text"
+        inputMode="decimal"
+        pattern="[0-9]*[.,]?[0-9]*"
         min={min}
         step={step}
         max={max}
