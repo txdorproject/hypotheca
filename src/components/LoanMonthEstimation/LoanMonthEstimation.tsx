@@ -76,7 +76,7 @@ const LoanMonthEstimation = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="fixed bottom-0 bg-white w-full left-0 py-5 shadow-2xl px-4 border-t border-neutral-300 lg:relative lg:shadow-none lg:border-0 lg:bg-transparent lg:py-0 lg:px-0"
+      className="fixed bottom-0 bg-white w-full left-0 py-3 shadow-2xl px-4 border-t border-neutral-300 lg:relative lg:shadow-none lg:border-0 lg:bg-transparent lg:py-0 lg:px-0"
     >
       <LoanMonthEstimationTitle year={years} debtRatio={debtRatio} />
       <div

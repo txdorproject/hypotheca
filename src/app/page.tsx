@@ -54,7 +54,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-3">
+    <div className="p-3 pt-0 lg:pt-3">
       <div className="w-11/12 m-auto mt-4 flex flex-col gap-5 lg:flex-row">
         <div className="w-full lg:w-8/12">
           <LoanForm
